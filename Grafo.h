@@ -1,10 +1,8 @@
 #ifndef GRAFO_H_INCLUDED
 #define GRAFO_H_INCLUDED
-#include "Rutas.h"
-#include"ListaRutas.h"
-#include <stdio.h>
+#include <Rutas.h>
+#include <ListaRutas.h>
 #include <iomanip>
-#include <stdio.h>
 #include <limits.h>
 #include <vector>
 #include <algorithm>
@@ -25,11 +23,16 @@ public:
     int oporigen, opdestino;
     int tama(int auxiliar);
     void posiciones();
-    int distanciaMinima(int dist[], bool sptSet[]);
-    void Imprimircamino(int auxiliar[], int j);
-    int ImprimirSolucion(int dist[], int n, int auxiliar[]);
+    int distanciaMinima(int dist[],
+			bool sptSet[]);
+    void Imprimircamino(int auxiliar[],
+			int j);
+    int ImprimirSolucion(int dist[],
+			 int n,
+			 int auxiliar[]);
     void DijkstraFuncion();
-    void Dijkstra(int Grafo[Vertices][Vertices],int src);
+    void Dijkstra(int Grafo[Vertices][Vertices],
+		  int src);
 };
 
 }

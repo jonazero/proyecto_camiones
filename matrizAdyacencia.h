@@ -1,8 +1,7 @@
 #ifndef MATRIZADYACENCIA_H_INCLUDED
 #define MATRIZADYACENCIA_H_INCLUDED
-#include "Rutas.h"
-#include"ListaRutas.h"
-#include <stdio.h>
+#include <Rutas.h>
+#include <ListaRutas.h>
 #include <iomanip>
 #include <vector>
 #include <algorithm>
@@ -11,21 +10,24 @@
 #include <climits>
 #include <limits>
 using namespace std;
-    vector<string>origenes;
-    vector<string>destinos;
-    vector<int>pos1;
-    vector<int>pos2;
-    vector<int>orpos;
-    vector<int>despos;
-    int oporigen, opdestino;
+
+vector<string>origenes;
+vector<string>destinos;
+vector<int>pos1;
+vector<int>pos2;
+vector<int>orpos;
+vector<int>despos;
+int oporigen; 
+int opdestino;
 
 int tama(int auxiliar)
 {
     auxiliar=0;
     pRutas aux = inicior;
-    while(aux!=finr){
-    auxiliar++;
-    aux=aux->siguiente;
+    while(aux!=finr)
+    {
+        auxiliar++;
+        aux=aux->siguiente;
     }
     auxiliar++;
     return auxiliar;
@@ -41,7 +43,7 @@ void posiciones()
     {
         if(destinos[0] == origenes[j])
         {
-          despos.push_back(j);
+            despos.push_back(j);
         }
 
     }
@@ -50,7 +52,6 @@ void posiciones()
     //Matriz que guarda origen y destino
     for(int i=0; i<tamano; i++)
     {
-
         for(int j=0; j<1; j++)
         {
             chacha[i][j] = aux->origen;
@@ -76,17 +77,17 @@ void posiciones()
     {
         for(int h=0; h<origenes.size(); h++)
         {
-          if(destinos[k]==origenes[h])
-          {
-              despos.push_back(h);
-          }
+            if(destinos[k]==origenes[h])
+            {
+                despos.push_back(h);
+            }
         }
     }
 
      for(int i=0; i<despos.size()/2; i++)
      {
-        pos1.push_back(despos[i+pat]);
-        pat++;
+         pos1.push_back(despos[i+pat]);
+         pat++;
      }
 
      cout<<"Arreglo2\n\n"<<endl;
@@ -99,81 +100,82 @@ void posiciones()
 
 
 }
-const int Vertices = 10;
+const int vertices = 10;
 
 //funcion que devuelce la distancia minima del vertice origen
-int distanciaMinima(int dist[], bool origen[])
+int distanciaMinima(int dist[], 
+		    bool origen[])
 {
-	int min = INT_MAX, disminima;
-
-	for (int v = 0; v < Vertices; v++)
-		if (origen[v] == false && dist[v] <= min)
-			min = dist[v], disminima = v;
-
-	return disminima;
+    int min = INT_MAX, disminima;
+    for (int v = 0; v < vertices; v++)
+    {
+	if (origen[v] == false && dist[v] <= min)
+	{
+	    min = dist[v], disminima = v;
+	}
+    }
+    return disminima;
 }
 
 
-void Imprimircamino(int origen[], int destino)
+void Imprimircamino(int origen[],
+		    int destino)
 {
 
-	if (origen[destino] == -1)
-		return;
+    if (origen[destino] == -1)
+    {
+	return;
+    }
 
-	Imprimircamino(origen, origen[destino]);
-
-	cout<<"-> "<<origenes[destino];
+    Imprimircamino(origen, origen[destino]);
+    cout<<"-> "<<origenes[destino];
 }
-int ImprimirSolucion(int dist[], int n, int auxiliar[])
+
+int ImprimirSolucion(int dist[], 
+		     int n, 
+		     int auxiliar[])
 {
-	int src = 0;
-
-
-    cout<<"\n"<<origenes[oporigen]<<" -> "<<origenes[opdestino]<<"\tDistancia: "<<dist[opdestino]<<"\tCamino:"<<origenes[oporigen];
+    int src = 0;
+    cout<<"\n"<<origenes[oporigen]<<" -> "<<origenes[opdestino]<<"\tDistancia: "
+	    <<dist[opdestino]<<"\tCamino:"<<origenes[oporigen];
     Imprimircamino(auxiliar, opdestino);
-	return 0;
+    return 0;
 }
 
-void dijkstra(int Grafo[Vertices][Vertices], int origen)
+void dijkstra(int Grafo[vertices][vertices], 
+	      int origen)
 {
-	int dist[Vertices]; //dist guarda la distancia mas corta de entre dos vertices
-
-
-	bool aux[Vertices];
-
-
-	int conexion[Vertices]; //almacena la conexion entre vertices
+    int dist[vertices]; //dist guarda la distancia mas corta de entre dos vertices
+    bool aux[vertices];
+    int conexion[vertices]; //almacena la conexion entre vertices
 
     //se inician todas las distancias con false
-	for (int i = 0; i < Vertices; i++)
-	{
-		conexion[origen] = -1;
-		dist[i] = INT_MAX;
-		aux[i] = false;
-	}
+    for (int i = 0; i < Vertices; i++)
+    {
+	conexion[origen] = -1;
+	dist[i] = INT_MAX;
+	aux[i] = false;
+    }
 
-	dist[origen] = 0;
-
-	//Buscar el camino mas corto para todos los vertices
-	for (int count = 0; count < Vertices - 1; count++)
-	{
-
-		int u = distanciaMinima(dist, aux);
+    dist[origen] = 0;
+    //Buscar el camino mas corto para todos los vertices
+    for (int count = 0; count < vertices - 1; count++)
+    {
+        int u = distanciaMinima(dist, aux);
         //se marca el certice como true para saber que ya se proceso
-		aux[u] = true;
+	aux[u] = true;
 
-		//se actualiza las distancias considerando el vertice si no se encuentra en auxiliar
-		for (int v = 0; v < Vertices; v++)
-
-			if (!aux[v] && Grafo[u][v] &&
-				dist[u] + Grafo[u][v] < dist[v])
-			{
-				conexion[v] = u;
-				dist[v] = dist[u] + Grafo[u][v];
-			}
+	//se actualiza las distancias considerando el vertice si no se encuentra en auxiliar
+	for (int v = 0; v < vertices; v++)
+	{
+	    if (!aux[v] && Grafo[u][v] &&dist[u] + Grafo[u][v] < dist[v])
+	    {
+		conexion[v] = u;
+		dist[v] = dist[u] + Grafo[u][v];
+	    }
 	}
 
-	ImprimirSolucion(dist, Vertices, conexion);
+	ImprimirSolucion(dist, vertices, conexion);
 }
 
 int dijkFuncion()
@@ -183,10 +185,12 @@ int dijkFuncion()
 
     int pat =0;
     int pat2 = 1;
-    int inicio, fin, medio;
+    int inicio;
+    int fin;
+    int medio;
     int auxiliar;
     auxiliar=tama(auxiliar);
-    int matriz[Vertices][Vertices];
+    int matriz[vertices][vertices];
     int arrayRuta1[(auxiliar+1)/2];
     int arrayRuta2[(auxiliar+1)/2];
 
@@ -218,19 +222,18 @@ int dijkFuncion()
     {
         for(int j =0; j<auxiliar/2; j++)
         {
-           if(j==pos1[i])
-           {
-               matriz[i][j]=arrayRuta1[i];
-           }
-           else if(j==pos2[i])
-           {
-               matriz[i][j]=arrayRuta2[i];
-           }
-           else
-           {
-             matriz[i][j]=0;
-           }
-
+            if(j==pos1[i])
+            {
+                matriz[i][j]=arrayRuta1[i];
+            }
+            else if(j==pos2[i])
+            {
+                matriz[i][j]=arrayRuta2[i];
+            }
+            else
+            {
+                matriz[i][j]=0;
+            }
         }
     }
 
@@ -245,9 +248,9 @@ int dijkFuncion()
     cout<<endl;
     cout<<"Oporigen"<<oporigen<<endl;
     //Se manda a la funcion dijkstra la matriz y el vertice origen
-	dijkstra(matriz, oporigen);
-	cout<<endl;
-	destinos.clear();
+    dijkstra(matriz, oporigen);
+    cout<<endl;
+    destinos.clear();
     origenes.clear();
     despos.clear();
     orpos.clear();
