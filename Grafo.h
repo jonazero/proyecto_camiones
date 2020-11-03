@@ -1,10 +1,8 @@
 #ifndef GRAFO_H_INCLUDED
 #define GRAFO_H_INCLUDED
-#include "Rutas.h"
-#include"ListaRutas.h"
-#include <stdio.h>
+#include <Rutas.h>
+#include <ListaRutas.h>
 #include <iomanip>
-#include <stdio.h>
 #include <limits.h>
 #include <vector>
 #include <algorithm>
@@ -25,20 +23,26 @@ public:
     int oporigen, opdestino;
     int tama(int auxiliar);
     void posiciones();
-    int distanciaMinima(int dist[], bool sptSet[]);
-    void Imprimircamino(int auxiliar[], int j);
-    int ImprimirSolucion(int dist[], int n, int auxiliar[]);
+    int distanciaMinima(int dist[],
+			bool sptSet[]);
+    void Imprimircamino(int auxiliar[],
+			int j);
+    int ImprimirSolucion(int dist[],
+			 int n,
+			 int auxiliar[]);
     void DijkstraFuncion();
-    void Dijkstra(int Grafo[Vertices][Vertices],int src);
+    void Dijkstra(int Grafo[Vertices][Vertices],
+		  int src);
 };
 
 int Grafo::tama(int auxiliar)
 {
     auxiliar=0;
     pRutas aux = inicior;
-    while(aux!=finr){
-    auxiliar++;
-    aux=aux->siguiente;
+    while(aux!=finr)
+    {
+        auxiliar++;
+	aux=aux->siguiente;
     }
     auxiliar++;
     return auxiliar;
@@ -56,8 +60,8 @@ void Grafo::posiciones()
     {
         if(destinos[0] == origenes[j])
         {
-          despos.push_back(j);
-        cout<<despos[j]<<endl;
+	    despos.push_back(j);
+	    cout<<despos[j]<<endl;
         }
 
     }
@@ -90,28 +94,26 @@ void Grafo::posiciones()
         }
     }
     cout<<endl;
-    for(int i=0; i<tamano; i++)
-    {
-        //origenes.push_back(chacha[i][0]);
-        //cout<<vec[i]<<endl;
-    }
-
+	
     cout<<"Borrado\n\n"<<endl;
-    //sort(vec.begin(), vec.end());
     auto last = unique(origenes.begin(), origenes.end());
     origenes.erase(last, origenes.end());
     for(int i=0; i<origenes.size(); i++)
+    {
         cout<<origenes[i]<<" "<<endl;
+    }
 
     cout<<"\n\n\n";
 
     auto last1 = unique(destinos.begin(), destinos.end());
     destinos.erase(last1, destinos.end());
     for (const auto& i : destinos)
-		cout << i <<endl;
+    {
+	cout << i <<endl;
+    }
 
 
-		cout<<"\n\n";
+    cout<<"\n\n";
     for(int k=0; k<destinos.size(); k++)
     {
         for(int h=0; h<origenes.size(); h++)
@@ -146,74 +148,75 @@ void Grafo::posiciones()
      }
 origenes.clear();
 }
-int Grafo::distanciaMinima(int dist[], bool sptSet[])
+int Grafo::distanciaMinima(int dist[], 
+			   bool sptSet[])
 {
     int min = INT_MAX, min_index;
 
-	for (int v = 0; v < vertices; v++)
-		if (sptSet[v] == false && dist[v] <= min)
-			min = dist[v], min_index = v;
-
-	return min_index;
+    for (int v = 0; v < vertices; v++)
+    {
+	if (sptSet[v] == false && dist[v] <= min)
+	{
+	    min = dist[v], min_index = v;
+	}
+    }
+    return min_index;
 }
-void Grafo::Imprimircamino(int auxiliar[], int j)
+void Grafo::Imprimircamino(int auxiliar[], 
+			   int j)
 {
     if (auxiliar[j] == -1)
-		return;
-	Imprimircamino(auxiliar, auxiliar[j]);
-	cout<<"-> "<<origenes[j];
+    {
+	return;
+    }
+    Imprimircamino(auxiliar, auxiliar[j]);
+    cout<<"-> "<<origenes[j];
 }
-int Grafo::ImprimirSolucion(int dist[], int n, int auxiliar[])
+int Grafo::ImprimirSolucion(int dist[], 
+			    int n, 
+			    int auxiliar[])
 {
     int src = 0;
-    cout<<"\n"<<origenes[oporigen]<<" -> "<<origenes[opdestino]<<"\tDistancia: "<<dist[opdestino]<<"\tCamino:"<<origenes[oporigen];
+    cout<<"\n"<<origenes[oporigen]<<" -> "<<origenes[opdestino]<<"\tDistancia: "
+	    <<dist[opdestino]<<"\tCamino:"<<origenes[oporigen];
     Imprimircamino(auxiliar, opdestino);
-	return 0;
+    return 0;
 }
-void Grafo::Dijkstra(int Grafo[vertices][vertices], int src)
+void Grafo::Dijkstra(int Grafo[vertices][vertices], 
+		     int src)
 {
 	int dist[vertices]; //dist guarda la distancia mas corta de entre dos vertices
-
-
 	bool sptSet[vertices];
-
-
 	int parent[vertices];
-
-
 	for (int i = 0; i < vertices; i++)
 	{
-		parent[src] = -1;
-		dist[i] = INT_MAX;
-		sptSet[i] = false;
+	    parent[src] = -1;
+	    dist[i] = INT_MAX;
+	    sptSet[i] = false;
 	}
-
 	dist[src] = 0;
 
 	for (int count = 0; count < vertices - 1; count++)
 	{
-
-		int u = distanciaMinima(dist, sptSet);
-
-		sptSet[u] = true;
-
-		for (int v = 0; v < vertices; v++)
-
-			if (!sptSet[v] && Grafo[u][v] &&
-				dist[u] + Grafo[u][v] < dist[v])
-			{
-				parent[v] = u;
-				dist[v] = dist[u] + Grafo[u][v];
-			}
+	    int u = distanciaMinima(dist, sptSet);
+	    sptSet[u] = true;
+	    for (int v = 0; v < vertices; v++)
+	    {
+		if (!sptSet[v] && Grafo[u][v] && dist[u] + Grafo[u][v] < dist[v])
+		{
+		    parent[v] = u;
+		    dist[v] = dist[u] + Grafo[u][v];
+		}
 	}
-
 	ImprimirSolucion(dist, vertices, parent);
 }
 void Grafo::DijkstraFuncion()
 {
     int pat =0;
     int pat2 = 1;
-    int inicio, fin, medio;
+    int inicio; 
+    int fin;
+    int medio;
     int auxiliar;
     auxiliar=tama(auxiliar);
     int matriz[vertices][vertices];
@@ -246,7 +249,7 @@ void Grafo::DijkstraFuncion()
            }
            else
            {
-             matriz[i][j]=0;
+               matriz[i][j]=0;
            }
 
         }
