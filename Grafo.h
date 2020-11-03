@@ -34,6 +34,4 @@ public:
     void Dijkstra(int Grafo[Vertices][Vertices],
 		  int src);
 };
-
-}
 #endif // GRAFO_H_INCLUDED
